@@ -1,0 +1,25 @@
+// ============================================
+// STYLES: Détail d'une Commande
+// ============================================
+
+// Styles pour le spinner de chargement
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+// Styles des badges de statut
+.badge {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.bg-warning { background-color: #ffc107 !important; color: #212529; }
+.bg-success { background-color: #28a745 !important; color: white; }
+.bg-danger { background-color: #dc3545 !important; color: white; }
+
+// Style pour les totaux du tableau
+tfoot {
+    .table-primary { background-color: #cfe2ff; }
+    .table-success { background-color: #d1e7dd; }
+}

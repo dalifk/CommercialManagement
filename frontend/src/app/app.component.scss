@@ -1,0 +1,23 @@
+// ============================================
+// STYLES PRINCIPAUX
+// ============================================
+
+// Styles personnalisés pour l'application
+.navbar-brand {
+    font-weight: bold;
+}
+
+.container {
+    min-height: 80vh;
+}
+
+// Style pour le bouton de déconnexion
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+    
+    &:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+}

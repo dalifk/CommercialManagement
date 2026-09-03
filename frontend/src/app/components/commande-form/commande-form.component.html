@@ -1,0 +1,102 @@
+<!--
+============================================
+VUE: Formulaire Commande
+Permet de créer une commande avec ses lignes
+============================================
+-->
+
+<h2>Nouvelle Commande</h2>
+
+<form (ngSubmit)="onSubmit()">
+    <!-- Sélection du client -->
+    <div class="mb-3">
+        <label class="form-label">Client *</label>
+        <select class="form-select" 
+                [(ngModel)]="commande['client_associé']" 
+                name="client" required>
+            <option [ngValue]="0">Sélectionner un client</option>
+            <option *ngFor="let client of clients" [ngValue]="client.identifiant">
+                {{ client.nom }} {{ client['prénom_ou_raison_sociale'] }}
+            </option>
+        </select>
+    </div>
+
+    <!-- Liste des lignes de commande -->
+    <h4 class="mt-4">Lignes de commande</h4>
+    
+    <div *ngFor="let ligne of lignes; let i = index" class="card mb-3 p-3">
+        <div class="row">
+            <!-- Sélection du produit -->
+            <div class="col-md-5">
+                <label class="form-label">Produit</label>
+                <select class="form-select" 
+                        [(ngModel)]="ligne.produit_identifiant" 
+                        [name]="'produit_' + i">
+                    <option [ngValue]="0">Sélectionner</option>
+                    <option *ngFor="let produit of produits" [ngValue]="produit.identifiant">
+                        {{ produit['référence'] }} - {{ produit.nom_du_produit }}
+                    </option>
+                </select>
+            </div>
+            
+            <!-- Quantité -->
+            <div class="col-md-3">
+                <label class="form-label">Quantité</label>
+                <input type="number" class="form-control" 
+                       [(ngModel)]="ligne['quantité']" 
+                       [name]="'quantite_' + i">
+            </div>
+            
+            <!-- Prix unitaire (affichage) -->
+            <div class="col-md-2">
+                <label class="form-label">Prix unitaire</label>
+                <input type="text" class="form-control" 
+                       [value]="getProduitPrix(ligne.produit_identifiant) | currency:'EUR'" 
+                       disabled>
+            </div>
+            
+            <!-- Total ligne (affichage) -->
+            <div class="col-md-2">
+                <label class="form-label">Total ligne</label>
+                <input type="text" class="form-control" 
+                       [value]="ligne['quantité'] * getProduitPrix(ligne.produit_identifiant) | currency:'EUR'" 
+                       disabled>
+            </div>
+        </div>
+        
+        <!-- Bouton supprimer la ligne -->
+        <button type="button" class="btn btn-sm btn-danger mt-2" 
+                (click)="removeLine(i)">
+            ✖ Supprimer cette ligne
+        </button>
+    </div>
+
+    <!-- Bouton ajouter une ligne -->
+    <button type="button" class="btn btn-secondary mt-2" (click)="addLine()">
+        + Ajouter un produit
+    </button>
+
+    <!-- Récapitulatif des totaux -->
+    <div class="mt-4 p-3 bg-light rounded">
+        <div class="row">
+            <div class="col-md-4">
+                <strong>Total HT: </strong> {{ getTotalHT() | currency:'EUR' }}
+            </div>
+            <div class="col-md-4">
+                <strong>TVA (19%): </strong> {{ getTVA() | currency:'EUR' }}
+            </div>
+            <div class="col-md-4">
+                <strong>Total TTC: </strong> {{ getTotalTTC() | currency:'EUR' }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Boutons -->
+    <div class="mb-3 mt-3">
+        <button type="submit" class="btn btn-primary">Créer la commande</button>
+        <button type="button" class="btn btn-secondary ms-2" 
+                routerLink="/commandes">
+            Annuler
+        </button>
+    </div>
+</form>

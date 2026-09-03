@@ -1,0 +1,94 @@
+<!--
+============================================
+VUE: Détail d'une Commande
+Affiche les informations complètes d'une commande
+============================================
+-->
+
+<!-- Message de chargement -->
+<div *ngIf="!commande" class="text-center mt-5">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Chargement...</span>
+    </div>
+</div>
+
+<!-- Détails de la commande -->
+<div *ngIf="commande">
+    <!-- En-tête -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Détail de la Commande</h2>
+        <button class="btn btn-secondary" routerLink="/commandes">Retour</button>
+    </div>
+
+    <!-- Informations générales -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Commande #{{ commande['numéro_de_commande'] }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Client:</strong> {{ commande.clientNom }}</p>
+                    <p><strong>Date de commande:</strong> {{ commande.date_de_commande | date:'dd/MM/yyyy HH:mm' }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p>
+                        <strong>Statut:</strong>
+                        <!-- Badge de statut -->
+                        <span class="badge" 
+                              [class.bg-warning]="commande.statut_de_la_commande === 'Brouillon'"
+                              [class.bg-success]="commande.statut_de_la_commande === 'Validée'"
+                              [class.bg-danger]="commande.statut_de_la_commande === 'Annulée'">
+                            {{ commande.statut_de_la_commande }}
+                        </span>
+                    </p>
+                    <p><strong>Total HT:</strong> {{ commande.total_HT | currency:'EUR' }}</p>
+                    <p><strong>Total TTC:</strong> {{ commande.total_TTC | currency:'EUR' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lignes de commande -->
+    <h4>Lignes de commande</h4>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Référence</th>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
+                    <th>Total ligne</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ligne of commande.lignes_de_commande">
+                    <td>{{ ligne.produitReference }}</td>
+                    <td>{{ ligne.produitNom }}</td>
+                    <td>{{ ligne['quantité'] }}</td>
+                    <td>{{ ligne.prix_unitaire | currency:'EUR' }}</td>
+                    <td>{{ ligne.total_ligne | currency:'EUR' }}</td>
+                </tr>
+            </tbody>
+            <!-- Totaux en bas du tableau -->
+            <tfoot>
+                <tr class="table-primary fw-bold">
+                    <td colspan="4" class="text-end">Total HT</td>
+                    <td>{{ commande.total_HT | currency:'EUR' }}</td>
+                </tr>
+                <tr class="table-success fw-bold">
+                    <td colspan="4" class="text-end">Total TTC</td>
+                    <td>{{ commande.total_TTC | currency:'EUR' }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Bouton de validation (si brouillon) -->
+    <div *ngIf="commande.statut_de_la_commande === 'Brouillon'" class="mt-3">
+        <button class="btn btn-success btn-lg" (click)="validateCommande()">
+            ✅ Valider la commande
+        </button>
+    </div>
+</div>

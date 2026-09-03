@@ -1,0 +1,58 @@
+<!--
+============================================
+VUE: Page de Connexion
+Formulaire d'authentification JWT
+============================================
+-->
+
+<div class="login-container">
+    <div class="login-card">
+        <!-- Logo / Titre -->
+        <div class="text-center mb-4">
+            <h1>🏢 Gestion Commerciale</h1>
+            <p class="text-muted">Connectez-vous pour accéder à l'application</p>
+        </div>
+
+        <!-- Message d'erreur -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            ⚠️ {{ errorMessage }}
+        </div>
+
+        <!-- Formulaire de connexion -->
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" 
+                       id="email" 
+                       class="form-control" 
+                       [(ngModel)]="credentials.email" 
+                       name="email" 
+                       placeholder="Entrez votre email"
+                       required>
+            </div>
+
+            <!-- Mot de passe -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" 
+                       id="password" 
+                       class="form-control" 
+                       [(ngModel)]="credentials.password" 
+                       name="password" 
+                       placeholder="Entrez votre mot de passe"
+                       required>
+            </div>
+
+            <!-- ❌ Supprimé: Identifiants de test visibles -->
+
+            <!-- Bouton de connexion -->
+            <button type="submit" 
+                    class="btn btn-primary w-100" 
+                    [disabled]="loading || !loginForm.valid">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                {{ loading ? 'Connexion...' : 'Se connecter' }}
+            </button>
+        </form>
+    </div>
+</div>

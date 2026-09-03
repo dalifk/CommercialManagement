@@ -1,0 +1,61 @@
+<!--
+============================================
+VUE: Formulaire Produit
+Permet de créer ou modifier un produit
+============================================
+-->
+
+<h2>{{ isEditMode ? 'Modifier' : 'Créer' }} un Produit</h2>
+
+<form (ngSubmit)="onSubmit()">
+    <!-- Référence -->
+    <div class="mb-3">
+        <label class="form-label">Référence *</label>
+        <input type="text" class="form-control" 
+               [(ngModel)]="produit['référence']" 
+               name="reference" required>
+    </div>
+
+    <!-- Nom du produit -->
+    <div class="mb-3">
+        <label class="form-label">Nom du produit *</label>
+        <input type="text" class="form-control" 
+               [(ngModel)]="produit.nom_du_produit" 
+               name="nom" required>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" 
+                  [(ngModel)]="produit.description" 
+                  name="description" rows="2"></textarea>
+    </div>
+
+    <!-- Prix et stock (deux colonnes) -->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Prix unitaire HT *</label>
+            <input type="number" step="0.01" class="form-control" 
+                   [(ngModel)]="produit.prix_unitaire_HT" 
+                   name="prix" required>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Quantité en stock *</label>
+            <input type="number" class="form-control" 
+                   [(ngModel)]="produit['quantité_en_stock']" 
+                   name="stock" required>
+        </div>
+    </div>
+
+    <!-- Boutons -->
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">
+            {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+        </button>
+        <button type="button" class="btn btn-secondary ms-2" 
+                routerLink="/produits">
+            Annuler
+        </button>
+    </div>
+</form>

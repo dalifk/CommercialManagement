@@ -1,0 +1,49 @@
+<!--
+============================================
+VUE: Liste des Produits
+Affiche un tableau avec tous les produits
+============================================
+-->
+
+<!-- En-tête -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Liste des Produits</h2>
+    <button class="btn btn-primary" routerLink="/produits/new">+ Nouveau Produit</button>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Référence</th>
+                <th>Nom</th>
+                <th>Prix HT</th>
+                <th>Stock</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let produit of produits">
+                <!-- ✅ FIX: Utilisation de la notation entre crochets pour les caractères spéciaux -->
+                <!-- Angular ne peut pas lire 'référence' directement à cause du 'é' -->
+                <td>{{ produit['référence'] }}</td>
+                <td>{{ produit.nom_du_produit }}</td>
+                <td>{{ produit.prix_unitaire_HT | currency:'EUR' }}</td>
+                <td>
+                    <!-- ✅ FIX: Utilisation de la notation entre crochets pour 'quantité_en_stock' -->
+                    <span [class.text-danger]="produit['quantité_en_stock'] < 10"
+                          [class.text-warning]="produit['quantité_en_stock'] >= 10 && produit['quantité_en_stock'] < 50"
+                          [class.text-success]="produit['quantité_en_stock'] >= 50">
+                        {{ produit['quantité_en_stock'] }}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-warning me-1" 
+                            [routerLink]="['/produits/edit', produit.identifiant]">✏️</button>
+                    <button class="btn btn-sm btn-danger" 
+                            (click)="deleteProduit(produit.identifiant)">🗑️</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

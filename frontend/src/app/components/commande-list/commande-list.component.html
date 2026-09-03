@@ -1,0 +1,72 @@
+<!--
+============================================
+VUE: Liste des Commandes
+Affiche un tableau avec toutes les commandes
+============================================
+-->
+
+<!-- En-tête avec titre et bouton d'ajout -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Liste des Commandes</h2>
+    <button class="btn btn-primary" routerLink="/commandes/new">+ Nouvelle Commande</button>
+</div>
+
+<!-- Tableau des commandes -->
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>N° Commande</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Statut</th>
+                <th>Total HT</th>
+                <th>Total TTC</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Boucle sur la liste des commandes -->
+            <tr *ngFor="let commande of commandes">
+                <!-- ✅ FIX: Utilisation de la notation entre crochets pour les caractères spéciaux -->
+                <!-- 'numéro_de_commande' contient 'é' et 'ô' → utilisez [''] -->
+                <td>{{ commande['numéro_de_commande'] }}</td>
+                <td>{{ commande.clientNom }}</td>
+                <!-- ✅ Le pipe 'date' fonctionne grâce à CommonModule -->
+                <td>{{ commande.date_de_commande | date:'dd/MM/yyyy HH:mm' }}</td>
+                <td>
+                    <!-- Badge de statut avec couleur -->
+                    <span class="badge" 
+                          [class.bg-warning]="commande.statut_de_la_commande === 'Brouillon'"
+                          [class.bg-success]="commande.statut_de_la_commande === 'Validée'"
+                          [class.bg-danger]="commande.statut_de_la_commande === 'Annulée'">
+                        {{ commande.statut_de_la_commande }}
+                    </span>
+                </td>
+                <!-- ✅ Le pipe 'currency' fonctionne grâce à CommonModule -->
+                <td>{{ commande.total_HT | currency:'EUR' }}</td>
+                <td>{{ commande.total_TTC | currency:'EUR' }}</td>
+                <td>
+                    <!-- Bouton Détail -->
+                    <button class="btn btn-sm btn-info me-1" 
+                            [routerLink]="['/commandes/detail', commande.identifiant]">👁️</button>
+                    
+                    <!-- Bouton Modifier (uniquement si brouillon) -->
+                    <button *ngIf="commande.statut_de_la_commande === 'Brouillon'" 
+                            class="btn btn-sm btn-warning me-1" 
+                            [routerLink]="['/commandes/edit', commande.identifiant]">✏️</button>
+                    
+                    <!-- Bouton Valider (uniquement si brouillon) -->
+                    <button *ngIf="commande.statut_de_la_commande === 'Brouillon'" 
+                            class="btn btn-sm btn-success me-1" 
+                            (click)="validateCommande(commande.identifiant)">✅</button>
+                    
+                    <!-- Bouton Supprimer (uniquement si pas validée) -->
+                    <button *ngIf="commande.statut_de_la_commande !== 'Validée'" 
+                            class="btn btn-sm btn-danger" 
+                            (click)="deleteCommande(commande.identifiant)">🗑️</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

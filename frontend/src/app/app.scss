@@ -1,0 +1,22 @@
+// ============================================
+// STYLES DE LA BARRE DE NAVIGATION
+// ============================================
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.container {
+    min-height: 80vh;
+}
+
+// Style du bouton de déconnexion
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+
+    &:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+}

@@ -1,0 +1,55 @@
+<!--
+============================================
+VUE PRINCIPALE
+Barre de navigation et conteneur des pages
+============================================
+-->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <!-- Nom de l'application -->
+        <a class="navbar-brand" routerLink="/clients">
+            Gestion Commerciale
+        </a>
+
+        <!-- Bouton hamburger (affichage mobile) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Liens vers les pages de l'application -->
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/clients" routerLinkActive="active">
+                        Clients
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/produits" routerLinkActive="active">
+                        Produits
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/commandes" routerLinkActive="active">
+                        Commandes
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Bouton de déconnexion : affiché seulement si l'utilisateur est connecté -->
+            <button
+                *ngIf="authService.isAuthenticated$ | async"
+                type="button"
+                class="btn btn-outline-danger"
+                (click)="logout()">
+                Déconnexion
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Zone d'affichage des pages (clients, produits, commandes, connexion) -->
+<div class="container mt-4">
+    <router-outlet></router-outlet>
+</div>
